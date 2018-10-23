@@ -1,0 +1,10 @@
+version: '3'
+services:
+  frontend:
+    volumes:
+      - ./frontend/src:/app/src:ro
+    command: npm run ${FRONTEND_SCRIPT:-start}
+  backend:
+    volumes:
+      - ./backend/src:/app/src:ro
+    command: npm run ${BACKEND_SCRIPT:-dev}
