@@ -1,0 +1,14 @@
+version: '3'
+services:
+  frontend:
+    build: frontend
+    ports:
+      - "${FRONTEND_HOST_PORT:-8000}:${FRONTEND_CONTAINER_PORT:-8000}"
+    environment:
+      - ENDPOINT=${BACKEND_PROTOCOL:-http}://${BACKEND_HOSTNAME:-localhost}:${BACKEND_CONTAINER_PORT:-9000}${BACKEND_PATH:-/api}
+  backend:
+    build: backend
+    environment:
+      - APPID=${APPID:?APPID must be set and not empty}
+    ports:
+      - "${BACKEND_HOSRT_PORT-9000}:${BACKEND_CONTAINER_PORT-9000}"

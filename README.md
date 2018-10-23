@@ -4,6 +4,18 @@ There was a beautiful idea of building an app that would show the upcoming weath
 
 Luckily we now have [docker compose](https://docs.docker.com/compose/) saving us from installing the tools on our computer, and making sure the app looks (and is) the same in development and in production. All we need is someone to add the few missing files!
 
+## Running
+
+To run both backend and frontend with default ports (8000 for the frontend, 9000 for the backend):
+`[sudo] APPID=<openweathermap.org api key> docker-compose up`
+APPID, ports etc. may also be defined in .env. See .env.example.
+When running individually, the frontend should be given a full URL of the backend in the environment variable ENDPOINT in addition to defining APPID for the backend. E.g. for backend in backend directory:
+`[sudo] docker build -t weatherapp_backend .`
+`[sudo] docker run --rm -i -p 9000:9000 --name weatherapp_backend -t weatherapp_backend -e "APPID=<your api key>"`
+And for the frontend in the frontend directory:
+`[sudo] docker build -t weatherapp_frontend .`
+`[sudo] docker run --rm -i -p 8000:8000 --name weatherapp_frontend -t weatherapp_frontend -e "ENDPOINT=http://localhost:9000/api"`
+
 ## Prerequisites
 
 * An [openweathermap](http://openweathermap.org/) API key.
