@@ -10,6 +10,8 @@ To run both backend and frontend with default ports (8000 for the frontend, 9000
 `[sudo] [APPID=<openweathermap.org api key>] docker-compose up`
 To run in development mode (src folders mounted read-only inside containers to enable hot reloa):
 `[sudo] [APPID=<openweathermap.org api key>] docker-compose -f docker-compose.yml -f docker-compose.development.yml up`
+package.json, and by extension node_modules is cached to speed up docker builds. To include newly installed packages add --build (or build separately):
+`[sudo] [APPID=<openweathermap.org api key>] docker-compose -f docker-compose.yml -f docker-compose.development.yml up --build`
 APPID, ports etc. may also be defined in .env. See .env.example.
 When running individually, the frontend should be given a full URL of the backend in the environment variable ENDPOINT in addition to defining APPID for the backend. E.g. for backend in backend directory:
 `[sudo] docker build -t weatherapp_backend .`
