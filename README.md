@@ -16,6 +16,10 @@ And for the frontend in the frontend directory:
 `[sudo] docker build -t weatherapp_frontend .`
 `[sudo] docker run --rm -i -p 8000:8000 --name weatherapp_frontend -t weatherapp_frontend -e "ENDPOINT=http://localhost:9000/api"`
 
+## App usage
+
+Now, by default, app shows a forecast for a point in time that is between 2 and 5 hours from current time. Default URL for app is `http://localhost:8000/`. Current weather is still available by appending `?current` to URL, i.e. `http://localhost:8000/?current` in the default configuration.
+
 ## Prerequisites
 
 * An [openweathermap](http://openweathermap.org/) API key.

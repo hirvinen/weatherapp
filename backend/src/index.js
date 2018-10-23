@@ -15,18 +15,35 @@ const app = new Koa();
 
 app.use(cors());
 
-const fetchWeather = async () => {
-  const endpoint = `${mapURI}/weather?q=${targetCity}&appid=${appId}&`;
+const fetchWeather = async (apiPath = "forecast") => {
+  const endpoint = `${mapURI}/${apiPath}?q=${targetCity}&appid=${appId}&`;
   const response = await fetch(endpoint);
-
   return response ? response.json() : {}
 };
 
 router.get('/api/weather', async ctx => {
-  const weatherData = await fetchWeather();
+  const weatherData = await fetchWeather("weather");
 
   ctx.type = 'application/json; charset=utf-8';
   ctx.body = weatherData.weather ? weatherData.weather[0] : {};
+});
+
+router.get('/api/forecast', async ctx => {
+  const weatherData = await fetchWeather("forecast");
+
+  // Get the first forecast that is at least two hours in the future
+  const minimumTime = Math.floor( Date.now() / 1000) + 2 * 60 * 60;
+  // Guard against data not being ordered in ascending time order
+  const maximumTime = minimumTime + 3 * 60 * 60;
+
+  const forecast = weatherData.list
+    ? weatherData.list.find( weatherSlice => minimumTime <= weatherSlice.dt && weatherSlice.dt <= maximumTime )
+    : false
+
+  ctx.type = 'application/json; charset=utf-8';
+  ctx.body = forecast
+    ? forecast.weather[0]
+    : {};
 });
 
 app.use(router.routes());

@@ -3,9 +3,14 @@ import ReactDOM from 'react-dom';
 
 const baseURL = process.env.ENDPOINT;
 
-const getWeatherFromApi = async () => {
+// Default to forecast. Current weather is the only currently supported alternative.
+const getWeatherFromApi = async (type = "forecast") => {
   try {
-    const response = await fetch(`${baseURL}/weather`);
+    if (type !== "forecast" && type !== "current") throw Error(`Unsupported weather type '${type}'`);
+    const apiPath = type === "current"
+      ? "weather"
+      : type;
+    const response = await fetch(`${baseURL}/${apiPath}`);
     return response.json();
   } catch (error) {
     console.error(error);
@@ -24,7 +29,9 @@ class Weather extends React.Component {
   }
 
   async componentWillMount() {
-    const weather = await getWeatherFromApi();
+    const weatherType = window.location.search.replace(/^\?/, '') || "forecast";
+    const weather     = await getWeatherFromApi(weatherType);
+
     this.setState({icon: weather.icon.slice(0, -1)});
   }
 
