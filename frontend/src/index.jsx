@@ -1,5 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+let fetch = typeof window !== 'undefined'
+  ? window.fetch
+  : null
 
 const baseURL = process.env.ENDPOINT;
 
@@ -76,7 +79,7 @@ class Weather extends React.Component {
   }
 }
 
-ReactDOM.render(
+if (typeof document !== 'undefined') ReactDOM.render(
   <Weather />,
   document.getElementById('app')
 );
