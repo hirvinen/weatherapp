@@ -7,18 +7,39 @@ Luckily we now have [docker compose](https://docs.docker.com/compose/) saving us
 ## Running
 
 To run both backend and frontend with default ports (8000 for the frontend, 9000 for the backend):
+
 `[sudo] [APPID=<openweathermap.org api key>] docker-compose up`
-To run in development mode (src folders mounted read-only inside containers to enable hot reloa):
+
+To run in development mode (src folders mounted read-only inside containers to enable hot reload):
+
 `[sudo] [APPID=<openweathermap.org api key>] docker-compose -f docker-compose.yml -f docker-compose.development.yml up`
+
 package.json, and by extension node_modules is cached to speed up docker builds. To include newly installed packages add --build (or build separately):
+
 `[sudo] [APPID=<openweathermap.org api key>] docker-compose -f docker-compose.yml -f docker-compose.development.yml up --build`
+
 APPID, ports etc. may also be defined in .env. See .env.example.
 When running individually, the frontend should be given a full URL of the backend in the environment variable ENDPOINT in addition to defining APPID for the backend. E.g. for backend in backend directory:
+
 `[sudo] docker build -t weatherapp_backend .`
+
 `[sudo] docker run --rm -i -p 9000:9000 --name weatherapp_backend -t weatherapp_backend -e "APPID=<your api key>"`
+
 And for the frontend in the frontend directory:
+
 `[sudo] docker build -t weatherapp_frontend .`
+
 `[sudo] docker run --rm -i -p 8000:8000 --name weatherapp_frontend -t weatherapp_frontend -e "ENDPOINT=http://localhost:9000/api"`
+
+### With ansible
+
+To install prerequisites and run both frontend and backend on an ubuntu host with nginx as a reverse proxy and Lets Encrypt certificates:
+
+* Set up DNS for your target host
+* set APPID, FRONTEND_HOSTNAME and BACKEND_HOSTNAME in .env
+* set host in ansible/hosts
+* run `ansible-playbook [-u <remote_user>] -i ansible/hosts -e 'ansible_python_interpreter=/usr/bin/python3' -e 'WEATHERAPP_ENV_FILE=../.env' ansible/site.yml`
+* `-e 'ansible_python_interpreter=/usr/bin/python3'` may be omitted if python2 is installed on target
 
 ## App usage
 
