@@ -15,6 +15,6 @@ services:
       - "443:443"
     volumes:
       - "/var/run/docker.sock:/tmp/docker.sock:ro"
-    environment:
+    #environment:
       #- LETSENCRYPT_EMAIL=<email for letsencrypt registation (defaults to info@VIRTUAL_HOST per container VIRTUAL_HOST)
     restart: always
