@@ -11,8 +11,8 @@
   - name: Install prerequisites for installing docker
     apt:
       name: "{{ docker_prerequisites }}"
-      state: present
-      update_cache: no
+      state: latest
+      update_cache: yes
   - name: Add apt key for docker repository
     apt_key:
       url: https://download.docker.com/linux/ubuntu/gpg
@@ -27,7 +27,8 @@
   - name: Install docker
     apt:
       name: docker-ce
-      state: present
+      state: latest
+      update_cache: yes
   - name: Ensure docker service is running
     service:
       name: docker
@@ -36,15 +37,15 @@
   - name: Intall pip
     apt:
       name: python3-pip
-      state: present
+      state: latest
   - name: Install docker-compose
     pip:
       name: docker-compose
-      state: present
+      state: latest
   - name: Install git
     apt:
       name: git
-      state: present
+      state: latest
   - name: Get app
     git:
       repo: "https://github.com/hirvinen/weatherapp"
