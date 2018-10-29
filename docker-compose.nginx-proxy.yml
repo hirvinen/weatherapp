@@ -1,0 +1,20 @@
+version: '3'
+services:
+  frontend:
+    environment:
+      - VIRTUAL_HOST=${FRONTEND_HOSTNAME:? Frontend hostname is required for proxying}
+      - ENDPOINT=https://${BACKEND_HOSTNAME:? Backend hostname is required for proxying}${BACKEND_PATH:-/api}
+    command: npm run start -- --public ${FRONTEND_HOSTNAME}
+  backend:
+    environment:
+      - VIRTUAL_HOST=${BACKEND_HOSTNAME:? Backend hostname is required for proxying}
+  rproxy:
+    image: eforce21/letsencrypt-nginx-proxy:1.2.0
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+    environment:
+      #- LETSENCRYPT_EMAIL=<email for letsencrypt registation (defaults to info@VIRTUAL_HOST per container VIRTUAL_HOST)
+    restart: always
