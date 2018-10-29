@@ -1,6 +1,6 @@
 # Weatherapp
 
-This is a partial solution to an [excercise by Eficode](https://github.com/Eficode/weatherapp). The original README is preserved at the end of this.
+This is a partial solution to an [excercise by Eficode](https://github.com/Eficode/weatherapp). The original README is preserved at the end of this. [Demo hosted on AWS](https://weather.hirvinen.fi/)
 
 ## Running
 
