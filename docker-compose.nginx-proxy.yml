@@ -3,6 +3,8 @@ services:
   frontend:
     environment:
       - VIRTUAL_HOST=${FRONTEND_HOSTNAME:? Frontend hostname is required for proxying}
+      - ENDPOINT=https://${BACKEND_HOSTNAME:? Backend hostname is required for proxying}${BACKEND_PATH:-/api}
+    command: npm run start -- --public ${FRONTEND_HOSTNAME}
   backend:
     environment:
       - VIRTUAL_HOST=${BACKEND_HOSTNAME:? Backend hostname is required for proxying}
